@@ -113,7 +113,7 @@
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <widget class="QWidget" name="ques_list">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -125,6 +125,9 @@
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QPushButton" name="pushButton_addQue">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <property name="text">
               <string>Add Question</string>
              </property>
@@ -137,7 +140,7 @@
        <item row="1" column="0">
         <widget class="QPushButton" name="pushButton_submitQuiz">
          <property name="text">
-          <string>Submit Quiz</string>
+          <string>Save Quiz</string>
          </property>
         </widget>
        </item>

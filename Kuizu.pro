@@ -28,20 +28,23 @@ SOURCES += \
         login.cpp \
         main.cpp \
         kuizu.cpp \
+        quespage.cpp \
         quizques.cpp \
         teacherdashboard.cpp
 
 HEADERS += \
         kuizu.h \
         login.h \
+        quespage.h \
         quizques.h \
         teacherdashboard.h
 
 FORMS += \
         kuizu.ui \
         login.ui \
+        quespage.ui \
         teacherdashboard.ui
-
+QT           += network widgets
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

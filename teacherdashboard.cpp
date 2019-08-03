@@ -1,11 +1,14 @@
 #include "teacherdashboard.h"
 #include "ui_teacherdashboard.h"
+#include "quespage.h"
+#include <QtDebug>
 TeacherDashboard::TeacherDashboard(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TeacherDashboard)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
+    this->ques_counter=0;
 }
 
 TeacherDashboard::~TeacherDashboard()
@@ -19,7 +22,8 @@ void TeacherDashboard::on_pushButton_createQuiz_clicked()
 
 void TeacherDashboard::on_pushButton_addQue_clicked()
 {
-    this->addQueWidget();
+    ui->stackedWidget->insertWidget(3 + ques_counter++ ,new QuesPage(ui->stackedWidget,this));
+    ui->stackedWidget->setCurrentIndex(2+ques_counter);
 }
 void TeacherDashboard::on_pushButton_submitQuiz_clicked()
 {
@@ -44,47 +48,25 @@ void TeacherDashboard::on_pushButton_3_clicked()
 {
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex()-1);
 }
-void TeacherDashboard::on_pushButton_done(){
-
+void TeacherDashboard::addToQlist(QString ques_desc,QString ans1,QString ans2,QString ans3,QString ans4,char ans){
+    myQueslist.push_back(new QuizQues(ques_desc,ans1,ans2,ans3,ans4,ans));
+    refreshQuesList();
+}
+void TeacherDashboard::refreshQuesList(){
+    QLayout* quesListLayout = ui->stackedWidget->widget(2)->layout();
+    list <QuizQues*> :: iterator it;
+    QVBoxLayout *Questions = new QVBoxLayout();
+    QHBoxLayout *myQuestion;
+    for (it = myQueslist.begin();it != myQueslist.end();it++) {
+        myQuestion = new QHBoxLayout();
+        myQuestion->addWidget(new QLabel((*it)->ques_desc));
+        myQuestion->addWidget(new QLabel((*it)->ans1));
+        myQuestion->addWidget(new QLabel((*it)->ans2));
+        myQuestion->addWidget(new QLabel((*it)->ans3));
+        myQuestion->addWidget(new QLabel((*it)->ans4));
+        Questions->addItem(myQuestion);
+    }
+    quesListLayout->addWidget(new  QLabel("HELLO") );
+    ui->stackedWidget->widget(2)->setLayout(quesListLayout);
 }
 
-void TeacherDashboard::addQueWidget(){
-    QWidget* queFrame = new QWidget();
-    QVBoxLayout* myLayout = new QVBoxLayout();
-
-    QLabel* quesDesc = new QLabel();
-    quesDesc->setText("Question Description");
-    myLayout->addWidget(quesDesc);
-    QLineEdit * que = new QLineEdit();
-    myLayout->addWidget(que);
-
-    QLabel* answer1 = new QLabel();
-    answer1->setText("Answer 1");
-    myLayout->addWidget(answer1);
-    QLineEdit * ans1 = new QLineEdit();
-    myLayout->addWidget(ans1);
-
-    QLabel* answer2 = new QLabel();
-    answer2->setText("Answer 2");
-    myLayout->addWidget(answer2);
-    QLineEdit * ans2 = new QLineEdit();
-    myLayout->addWidget(ans2);
-
-    QLabel* answer3 = new QLabel();
-    answer3->setText("Answer 3");
-    myLayout->addWidget(answer3);
-    QLineEdit * ans3 = new QLineEdit();
-    myLayout->addWidget(ans3);
-
-    QLabel* answer4 = new QLabel();
-    answer4->setText("Answer 4");
-    myLayout->addWidget(answer4);
-    QLineEdit * ans4 = new QLineEdit();
-    myLayout->addWidget(ans4);
-
-    QPushButton* done = new QPushButton();
-    done->setText("Add Question");
-    connect(done,SIGNAL(clicked()),this,SLOT(on_pushButton_done()));
-    queFrame->setLayout(myLayout);
-    ui->stackedWidget->insertWidget(3,queFrame);
-}
